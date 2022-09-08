@@ -1,0 +1,15 @@
+{
+  "type": "record",
+  "name": "EndUser",
+  "namespace": "com.aklamio.schemaregistrydemo",
+  "fields": [
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "id",
+      "type": "int"
+    }
+  ]
+}
