@@ -28,9 +28,8 @@ class Config {
      */
     @Bean
     fun kafkaAdmin(): KafkaAdmin {
-        val configs: MutableMap<String, Any> = HashMap()
-        configs[AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG] = kafkaURL
-        return KafkaAdmin(configs)
+        val props: Map<String, Any> = hashMapOf(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG to kafkaURL)
+        return KafkaAdmin(props)
     }
 
     @Bean
@@ -46,11 +45,12 @@ class Config {
      */
     @Bean
     fun producerFactory(): ProducerFactory<String, EndUser> {
-        val props: MutableMap<String, Any> = hashMapOf()
-        props[ProducerConfig.BOOTSTRAP_SERVERS_CONFIG] = kafkaURL
-        props[ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG] = KafkaAvroSerializer::class.java
-        props[ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG] = KafkaAvroSerializer::class.java
-        props["schema.registry.url"] = schemaRegistryURL
+        val props: Map<String, Any> = hashMapOf(
+            ProducerConfig.BOOTSTRAP_SERVERS_CONFIG to kafkaURL,
+            ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG to KafkaAvroSerializer::class.java,
+            ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG to KafkaAvroSerializer::class.java,
+            "schema.registry.url" to schemaRegistryURL
+        )
         return DefaultKafkaProducerFactory(props)
     }
 
@@ -67,12 +67,13 @@ class Config {
      */
     @Bean
     fun consumerFactory(): ConsumerFactory<String, EndUser> {
-        val props: MutableMap<String, Any> = hashMapOf()
-        props[ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG] = kafkaURL
-        props[ConsumerConfig.GROUP_ID_CONFIG] = "testConsumerGroup"
-        props[ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG] = KafkaAvroDeserializer::class.java
-        props[ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG] = KafkaAvroDeserializer::class.java
-        props["schema.registry.url"] = schemaRegistryURL
+        val props: Map<String, Any> = hashMapOf(
+            ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG to kafkaURL,
+            ConsumerConfig.GROUP_ID_CONFIG to "testConsumerGroup",
+            ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG to KafkaAvroDeserializer::class.java,
+            ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG to KafkaAvroDeserializer::class.java,
+            "schema.registry.url" to schemaRegistryURL
+        )
         return DefaultKafkaConsumerFactory(props)
     }
 
